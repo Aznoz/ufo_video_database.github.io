@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFO Online Database</title>
+</head>
+<body>
+    <h1>UFO Online Database</h1>
+
+    <!-- Form pro nahrání videa -->
+    <form method="POST" enctype="multipart/form-data" action="/">
+        {{ form.hidden_tag() }}
+        <p>Title: {{ form.title(size=32) }}</p>
+        <p>Description: {{ form.description(size=32) }}</p>
+        <p>Category: {{ form.category(size=32) }}</p>
+        <p>Video: {{ form.video }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <hr>
+
+    <!-- Filtrovací formulář pro kategorie -->
+    <form method="GET" action="/">
+        <label for="category">Filter by Category:</label>
+        <select name="category" id="category">
+            <option value="">All</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+
+    <hr>
+
+    <!-- Zobrazení videí -->
+    {% for record in records %}
+        <h2>{{ record.title }}</h2>
+        <p>Description: {{ record.description }}</p>
+        <p>Category: {{ record.category }}</p>
+        <p>Video: <a href="{{ record.video_url }}" target="_blank">Watch</a> | <a href="{{ url_for('download_video', filename=record.video_url.split('/')[-1]) }}" download>Download</a></p>
+        <hr>
+    {% endfor %}
+
+</body>
+</html>
